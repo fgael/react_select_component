@@ -1,6 +1,6 @@
 {
   "name": "@fgael/react-select",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A simple select component for React",
   "type": "module",
   "main": "dist/react-select.umd.js",
@@ -12,7 +12,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "publish": "publish --access public"
   },
   "dependencies": {
     "react": "^18.3.1",

@@ -24,26 +24,14 @@ Here's how to use the `Select` component in your React project:
 import React from "react";
 import Select from "@fgael/react-select";
 
-const options = [
-  { id: "1", display: "Option 1" },
-  { id: "2", display: "Option 2" },
-  { id: "3", display: "Option 3" },
-];
+const options = ["Option1", "Option2", "Option3"];
 
 const App = () => {
   const handleChange = (value) => {
     console.log("Selected value:", value);
   };
 
-  return (
-    <Select
-      options={options}
-      valueKey="id"
-      displayKey="display"
-      defaultKey="id"
-      onChange={handleChange}
-    />
-  );
+  return <Select options={options} valueKey="value" onChange={handleChange} />;
 };
 
 export default App;
