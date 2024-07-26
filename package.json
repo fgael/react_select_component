@@ -1,6 +1,6 @@
 {
   "name": "@fgael/react-select",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A simple select component for React",
   "type": "module",
   "main": "dist/react-select.umd.js",

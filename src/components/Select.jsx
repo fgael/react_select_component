@@ -61,9 +61,17 @@ const Select = ({
   };
 
   return (
-    <select value={selectedValue} onChange={handleChange}>
+    <select
+      className="react-select_list"
+      value={selectedValue}
+      onChange={handleChange}
+    >
       {optionsWithIds.map((option) => (
-        <option key={option.id} value={option[valueKey]}>
+        <option
+          className="react-select_option"
+          key={option.id}
+          value={option[valueKey]}
+        >
           {isSimpleList ? option.display : option[displayKey]}
         </option>
       ))}
