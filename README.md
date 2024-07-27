@@ -22,7 +22,7 @@ Here's how to use the `Select` component in your React project:
 
 ```jsx
 import React from "react";
-import Select from "./components/Select";
+import Select from "@fgael/react-select";
 
 const options = ["Option1", "Option2", "Option3"];
 
