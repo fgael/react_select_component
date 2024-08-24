@@ -6,6 +6,7 @@ describe("Select Component", () => {
   test("renders without crashing", () => {
     render(<Select options={[]} />);
     const selectElement = screen.getByRole("combobox");
+    // Check if the select element is present in the document
     expect(selectElement).toBeInTheDocument();
   });
 
@@ -13,6 +14,7 @@ describe("Select Component", () => {
     const options = ["Option 1", "Option 2", "Option 3"];
     render(<Select options={options} />);
     options.forEach((option) => {
+      // Ensure each option text is present in the document
       expect(screen.getByText(option)).toBeInTheDocument();
     });
   });
@@ -25,6 +27,7 @@ describe("Select Component", () => {
     ];
     render(<Select options={options} valueKey="id" displayKey="display" />);
     options.forEach((option) => {
+      // Ensure each option display text is present in the document
       expect(screen.getByText(option.display)).toBeInTheDocument();
     });
   });
@@ -45,10 +48,11 @@ describe("Select Component", () => {
       />
     );
 
+    // Simulate selecting the option with value "2"
     fireEvent.change(screen.getByRole("combobox"), {
       target: { value: "2" },
     });
-
+    // Verify that handleChange was called with the expected value
     expect(handleChange).toHaveBeenCalledWith("2");
   });
 
@@ -56,6 +60,7 @@ describe("Select Component", () => {
     const options = ["Option 1", "Option 2", "Option 3"];
     render(<Select options={options} />);
     const selectElement = screen.getByRole("combobox");
+    // Verify that the select element has the default value set to "1"
     expect(selectElement.value).toBe("1");
   });
 });
