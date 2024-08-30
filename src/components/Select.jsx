@@ -20,51 +20,51 @@ const Select = ({
   // useEffect hook to process options whenever 'options' or 'valueKey' changes
   useEffect(() => {
     if (options.length > 0) {
-      let updatedOptions;
-      // If the first option is a string, treat the list as a simple list (array of strings)
-      if (typeof options[0] === "string") {
-        updatedOptions = options.map((option, index) => ({
-          // Generate a unique ID for each option
-          id: generateId(index),
-          // Use the option string itself as the value
-          value: option,
-          // Use the option string itself as the display text
-          display: option,
+      // Check if all options are strings or objects
+      const allStrings = options.every((option) => typeof option === "string");
+      const allObjects = options.every(
+        (option) => typeof option === "object" && option !== null
+      );
+
+      // If all options are strings, treat the list as a simple list (array of strings)
+      if (allStrings) {
+        const updatedOptions = options.map((option, index) => ({
+          id: generateId(index), // Generate a unique ID for each option
+          value: option, // Use the option string itself as the value
+          display: option, // Use the option string itself as the display text
         }));
-        setIsSimpleList(true);
-        // If the first option is an object, process as an object list
-      } else if (typeof options[0] === "object") {
-        updatedOptions = options.map((option, index) => {
+        setIsSimpleList(true); // Indicate that the list is a simple list
+        setProcessedOptions(updatedOptions); // Update the state with processed options
+        setSelectedValue(updatedOptions[0][valueKey]); // Set the default selected value
+      } else if (allObjects) {
+        // If all options are objects, process as an object list
+        const updatedOptions = options.map((option, index) => {
           // Use existing 'id' if available, otherwise generate a new ID
           const generatedId = option.id || generateId(index);
           // Merge the generated ID with other option properties
           return { id: generatedId, ...option };
         });
-        setIsSimpleList(false);
+        setIsSimpleList(false); // Indicate that the list is a complex list
+        setProcessedOptions(updatedOptions); // Update the state with processed options
+        if (updatedOptions.length > 0) {
+          setSelectedValue(updatedOptions[0][valueKey]); // Set the default selected value
+        }
       } else {
-        console.error("Options should be an array of strings or objects.");
+        // If options are a mix of strings and objects, log an error
+        console.error(
+          "Options should be either all strings or all objects, not a mix."
+        );
         return;
-      }
-
-      // Update the state with the processed options
-      setProcessedOptions(updatedOptions);
-
-      // Set the default selected value to the value of the first processed option
-      if (updatedOptions.length > 0) {
-        setSelectedValue(updatedOptions[0][valueKey]);
       }
     }
   }, [options, valueKey]); // Dependency array: re-run effect when 'options' or 'valueKey' changes
 
   // Function to handle changes in the select input
   const handleChange = (event) => {
-    // Get the new selected value from the event
-    const newValue = event.target.value;
-    // Update the state with the new selected value
-    setSelectedValue(newValue);
-    // If 'onChange' prop is provided, call it with the new value
+    const newValue = event.target.value; // Get the new selected value from the event
+    setSelectedValue(newValue); // Update the state with the new selected value
     if (onChange) {
-      onChange(newValue);
+      onChange(newValue); // If 'onChange' prop is provided, call it with the new value
     }
   };
 
@@ -79,10 +79,8 @@ const Select = ({
       {processedOptions.map((option) => (
         <option
           className="react-select_option"
-          // Unique key for each option based on its 'id'
-          key={option.id}
-          // The value attribute for the option element
-          value={option[valueKey]}
+          key={option.id} // Unique key for each option based on its 'id'
+          value={option[valueKey]} // The value attribute for the option element
         >
           {/* Display the option text; use 'display' key for simple lists, 'displayKey' prop for complex lists */}
           {isSimpleList ? option.display : option[displayKey]}

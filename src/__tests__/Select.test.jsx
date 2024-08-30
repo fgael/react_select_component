@@ -56,11 +56,38 @@ describe("Select Component", () => {
     expect(handleChange).toHaveBeenCalledWith("2");
   });
 
-  test("sets the correct default value", () => {
+  test("sets the correct default value for a simple list", () => {
     const options = ["Option 1", "Option 2", "Option 3"];
     render(<Select options={options} />);
     const selectElement = screen.getByRole("combobox");
-    // Verify that the select element has the default value set to "1"
-    expect(selectElement.value).toBe("1");
+    // Verify that the select element has the default value set to the first option
+    expect(selectElement.value).toBe("1"); // value "1" is the ID generated for the first option
+  });
+
+  test("sets the correct default value for an object list", () => {
+    const options = [
+      { id: "1", display: "Option 1" },
+      { id: "2", display: "Option 2" },
+      { id: "3", display: "Option 3" },
+    ];
+    render(<Select options={options} valueKey="id" displayKey="display" />);
+    const selectElement = screen.getByRole("combobox");
+    // Verify that the select element has the default value set to the ID of the first option
+    expect(selectElement.value).toBe("1"); // ID of the first option
+  });
+
+  test("handles mixed options and logs an error", () => {
+    const consoleError = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    const mixedOptions = ["Option 1", { id: "2", display: "Option 2" }];
+    render(<Select options={mixedOptions} />);
+
+    // Verify that console.error was called to log the error
+    expect(consoleError).toHaveBeenCalledWith(
+      "Options should be either all strings or all objects, not a mix."
+    );
+
+    consoleError.mockRestore();
   });
 });
